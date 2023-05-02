@@ -27,7 +27,6 @@ namespace eTickets.Data
                 .WithMany(am => am.ActorsMovies)
                 .HasForeignKey(m => m.ActorId);
 
-
             base.OnModelCreating(modelBuilder);
         }
 
