@@ -2,7 +2,7 @@
 
 namespace eTickets.Models
 {
-    public class Cinema
+    public class Cinema:IEntityBase
     {
         [Key]
         public int Id { get; set; }

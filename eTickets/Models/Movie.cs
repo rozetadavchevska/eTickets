@@ -4,7 +4,7 @@ using eTickets.Data.Enums;
 
 namespace eTickets.Models
 {
-    public class Movie
+    public class Movie:IEntityBase
     {
         [Key]
         public int Id { get; set; }
