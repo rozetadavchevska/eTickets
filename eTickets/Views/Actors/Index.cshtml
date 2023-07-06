@@ -43,6 +43,4 @@
     </div>
 </div>
 
-<div class="text-white">
-    <a asp-controller="Actors" asp-action="Create" class="btn btn-success">Add New</a>
-</div>
+@await Html.PartialAsync("_CreateItem", "Actors")

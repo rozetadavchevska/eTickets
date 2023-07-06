@@ -1,6 +1,8 @@
 ﻿using eTickets.Data;
 using eTickets.Data.Services;
+using eTickets.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace eTickets.Controllers
@@ -21,12 +23,33 @@ namespace eTickets.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["Welcome"] = "Welcome to our store";
-            ViewBag.Description = "This is the store description";
+            var movieDropdownData = await _service.GetNewMovieDropdownValues();
+            
+            ViewBag.Cinemas = new SelectList(movieDropdownData.Cinemas, "Id", "Name");
+            ViewBag.Producers = new SelectList(movieDropdownData.Producers, "Id", "ProducerName");
+            ViewBag.Actors = new SelectList(movieDropdownData.Actors, "Id", "ActorName");
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(NewMovieVM movie)
+        {
+            if (!ModelState.IsValid)
+            {
+                var movieDropdownData = await _service.GetNewMovieDropdownValues();
+
+                ViewBag.Cinemas = new SelectList(movieDropdownData.Cinemas, "Id", "Name");
+                ViewBag.Producers = new SelectList(movieDropdownData.Producers, "Id", "ProducerName");
+                ViewBag.Actors = new SelectList(movieDropdownData.Actors, "Id", "ActorName");
+
+                return View(movie);
+            }
+
+            await _service.AddNewMovieAsync(movie);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Details(int id)
